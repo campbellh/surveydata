@@ -1052,7 +1052,8 @@ with col2f:
     ''' THE INDICATED PRIORITY TO BE PLACED ON RESERACH INTO TREATING
         OR MANAGING DIFFERENT MS SYMPTOMS'''
 
-
+st.markdown('#')
+st.markdown('#')
 st.subheader('| TERMINOLOGY')
 
 col1g, col2g= st.columns(2)
@@ -1061,6 +1062,7 @@ col1g, col2g= st.columns(2)
 with col1g:
     st.markdown('#')
     st.markdown('#')
+    
 
     '''LANGUAGE USAGE IS EVERY IMPORTANT TO EMPOWER PEOPLE WITH MS
        AND TO REDUCE BIASES- THEREFORE WE ASKED THE COMMUNITY TO
@@ -1071,6 +1073,77 @@ with col1g:
 with col2g:
     st.markdown('#')
     st.markdown('#')
+    
+
+    rank4=st.slider('1=Top Rank, 5= Lowest Rank',min_value=1, max_value=5)
+
+    termology_df=dffilter.iloc[:,158:163]
+    termology_df.columns=termology_df.columns.droplevel(0)
+
+    term_df=pd.DataFrame()
+
+    for i in range(termology_df.shape[1]):
+        term_df=pd.concat([term_df,termology_df.iloc[:,i].value_counts().to_frame()], axis=1)
+
+    
+    fig, ax = plt.subplots(1,1, figsize=(12, 6))
+    if rank4>=1:
+        ax.bar(term_df.columns, term_df.iloc[0,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[0])
+    else:
+        pass
+    if rank4>=2:
+        ax.bar(term_df.columns, term_df.iloc[1,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[1],bottom=term_df.iloc[0,:])
+    else:
+        pass
+    if rank4>=3:    
+        ax.bar(term_df.columns, term_df.iloc[2,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[2],bottom=term_df.iloc[0,:]+term_df.iloc[1,:])
+    else:
+        pass
+    if rank4>=4:
+        ax.bar(term_df.columns, term_df.iloc[3,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[3],bottom=term_df.iloc[0,:]+term_df.iloc[1,:]+term_df.iloc[2,:])
+    else:
+        pass
+    if rank4>=5:
+        ax.bar(term_df.columns, term_df.iloc[4,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[4],bottom=term_df.iloc[0,:]+term_df.iloc[1,:]+term_df.iloc[2,:]+term_df.iloc[3,:])
+    else:
+        pass
+    
+
+
+    fig.text(0.09, 1, 'Terminology', fontsize=15, fontweight='bold', fontfamily='sans')
+    #fig.text(0.09, 0.95, 'The three most frequent countries have been highlighted.', fontsize=12, fontweight='light', fontfamily='sans')
+
+    plt.box(False)
+
+    for s in ['top', 'left', 'right']:
+        ax.spines[s].set_visible(False)
+        
+    plt.grid(axis='y',color = 'grey', linestyle = '--', linewidth = 0.25) 
+
+    # Tick labels
+
+    # for i in term_df.T.shape[0]:
+    #     ax.annotate(f"{term_df.T[i]}", 
+    #                    xy=(i, term_df.T[i] + 2), #i like to change this to roughly 5% of the highest cat
+    #                    va = 'center', ha='center',fontweight='light', fontfamily='sans')
+
+     
+
+
+    grid_y_ticks = np.arange(0,((term_df.iloc[0,:].sum())*1.3), (((term_df.iloc[0,:].sum())*1.1)/4)) # y ticks, min, max, then step
+    ax.set_yticks(grid_y_ticks)
+    #ax.set_axisbelow(True)
+
+    plt.axhline(y = 0, color = 'black', linewidth = 1.8, alpha = 0.7)
+
+    plt.axvline(x = -0.5, color = 'black', linewidth = 1, alpha = 0.7)
+
+    #ax.tick_params(axis='both', which='major', labelsize=12)
+
+
+    ax.set_xticklabels(term_df.columns, fontfamily='sans', rotation=45, fontdict={'horizontalalignment':'right'});
+
+    st.pyplot(fig, use_container_width=True)
 
 
 
