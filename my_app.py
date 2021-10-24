@@ -1145,8 +1145,68 @@ with col1h:
     st.subheader('| ADVOCACY')
 
 
+    df_adv=dffilter.iloc[:,116:127]
+    df_adv.columns=df_adv.columns.droplevel(0)
+    
+    df_advocacy=pd.DataFrame() #(index=[range(1,7,1)])
+
+    for i in range(df_adv.shape[1]):
+        
+        df_n=pd.DataFrame(df_adv.iloc[:,i].value_counts().sort_index())
+        #df_new=pd.merge(df_new, df_n, right_index=True, left_index=True)
+        df_advocacy=pd.concat([df_advocacy, df_n], axis=1)
+    
+
+    df_advocacy=df_advocacy.reindex(reorderlist)
+
+    
+    df_advocacy=df_advocacy[df_advocacy.iloc[0,:].sort_values().index]
+    df_advocacy.rename(columns={'Increase in MS educational resources for people with MS, their families, carers and the general public.':'Increase in MS educational resources','Improved access to telehealth (e.g. video links for neurologist consultations).':'Improved access to telehealth', "Access to transport, appropriate housing (including better residential care), employment services, and other concessions to improve the quality of day to day life of people with MS.":'concessions to improve the quality of day to day life of people with MS' ,'Improved access to assistive technologies for day to day life (aids and equipment)':'Improved access to assistive technologies'}, inplace=True)
 
 
+    fig, ax = plt.subplots(1,1, figsize=(12, 6))
+    ax.bar(df_advocacy.columns, df_advocacy.iloc[0,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[0])
+    ax.bar(df_advocacy.columns, df_advocacy.iloc[1,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[1],bottom=df_advocacy.iloc[0,:])
+    ax.bar(df_advocacy.columns, df_advocacy.iloc[2,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[2],bottom=df_advocacy.iloc[0,:]+df_advocacy.iloc[1,:])
+    ax.bar(df_advocacy.columns, df_advocacy.iloc[3,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[3],bottom=df_advocacy.iloc[0,:]+df_advocacy.iloc[1,:]+df_advocacy.iloc[2,:])
+    ax.bar(df_advocacy.columns, df_advocacy.iloc[4,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[4],bottom=df_advocacy.iloc[0,:]+df_advocacy.iloc[1,:]+df_advocacy.iloc[2,:]+df_advocacy.iloc[3,:])
+    #ax.bar(df_advocacy.columns, df_advocacy.iloc[6,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[5],bottom=df_advocacy.T.loc[1,:]+df_advocacy.T.loc[2,:]+df_advocacy.T.loc[3,:]+df_advocacy.T.loc[4,:]+df_advocacy.T.loc[5,:])
+
+
+    fig.text(0.09, 1, 'ADVOCACY', fontsize=15, fontweight='bold', fontfamily='sans')
+    #fig.text(0.09, 0.95, 'The three most frequent countries have been highlighted.', fontsize=12, fontweight='light', fontfamily='sans')
+
+    plt.box(False)
+
+    for s in ['top', 'left', 'right']:
+        ax.spines[s].set_visible(False)
+        
+    plt.grid(axis='y',color = 'grey', linestyle = '--', linewidth = 0.25) 
+
+    # Tick labels
+
+    # for i in df_advocacy.T.shape[0]:
+    #     ax.annotate(f"{df_advocacy.T[i]}", 
+    #                    xy=(i, df_advocacy.T[i] + 2), #i like to change this to roughly 5% of the highest cat
+    #                    va = 'center', ha='center',fontweight='light', fontfamily='sans')
+
+     
+
+
+    grid_y_ticks = np.arange(0,((df_advocacy.iloc[:,0].sum())*1.3), (((df_advocacy.iloc[:,0].sum())*1.1)/4)) # y ticks, min, max, then step
+    ax.set_yticks(grid_y_ticks)
+    #ax.set_axisbelow(True)
+
+    plt.axhline(y = 0, color = 'black', linewidth = 1.8, alpha = 0.7)
+
+    plt.axvline(x = -0.5, color = 'black', linewidth = 1, alpha = 0.7)
+
+    #ax.tick_params(axis='both', which='major', labelsize=12)
+
+
+    ax.set_xticklabels(df_advocacy.columns, fontfamily='sans', rotation=45, fontdict={'horizontalalignment':'right'});
+
+    st.pyplot(fig, use_container_width=True)
     
 
 
