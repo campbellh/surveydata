@@ -187,7 +187,7 @@ dffilter=dffilter[dffilter['state', 'Unnamed: 189_level_1'].isin(filter_states)]
 
 # image = Image.open('MSRA_logo.png')
 # st.image(image, width=150)
-components.html("""<img src="https://www.msaustralia.org.au/sites/all/themes/agov/MS_agov/logo.png" alt="MS Australia logo"
+components.html("""<img src="https://www.msaustralia.org.au/wp-content/uploads/2021/09/ms-australia-full-logo.png" alt="MS Australia logo"
 					style="position:absolute;top:10px;right:0;">""")
 
 # Write a page title
@@ -225,14 +225,7 @@ with col1:
 with col2:
     st.title(df[df['Do you have MS (or suspected MS, e.g. clinically isolated syndrome)?', 'Response']=='Yes'].shape[0])
     st.text('HAVE MS')
-# # column 3
-# with col3:
-#     st.title(df.size.sum())
-#     st.text('CLIENTS')
-# # column 4
-# with col4:
-#     st.title(df.city.nunique())
-#     st.text('CITIES')
+
 
 st.markdown('#')
 
@@ -258,9 +251,6 @@ st.markdown('#')
 
 
 
-# #-----------------------------------------------------------------------
-# st.subheader('| WHERE WE ARE MAKING MORE MONEY')
-# #-----------------------------------------------------------------------
 #Filters
 australiafilter=df[df['country', 'Unnamed: 186_level_1']=='Australia'].index
 
@@ -749,7 +739,7 @@ with col2e:
 
     ax.bar(series_obj.sort_values(ascending=False).index, series_obj.sort_values(ascending=False),width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6))
 
-    fig.text(0.09, 1, 'Weighted Average of all Priorities rankings', fontsize=15, fontweight='bold', fontfamily='sans')
+    fig.text(0.09, 1, 'WEIGHTED AVERAGE OF ALL PRIORITIES RANKED', fontsize=15, fontweight='bold', fontfamily='sans')
 
     plt.box(False)
 
@@ -1110,7 +1100,7 @@ with col2g:
     
 
 
-    fig.text(0.09, 1, 'Terminology', fontsize=15, fontweight='bold', fontfamily='sans')
+    fig.text(0.09, 1, 'TERMINOLOGY', fontsize=15, fontweight='bold', fontfamily='sans')
     #fig.text(0.09, 0.95, 'The three most frequent countries have been highlighted.', fontsize=12, fontweight='light', fontfamily='sans')
 
     plt.box(False)
@@ -1147,16 +1137,25 @@ with col2g:
 
 
 
+col1h, col2h= st.columns(2)
+
+with col1h:
+    st.markdown('#')
+    st.markdown('#')
+    st.subheader('| ADVOCACY')
 
 
- 
 
 
-# https://maitiusexton.medium.com/how-to-create-a-choropleth-map-in-python-without-geopandas-gis-or-any-geojson-knowledge-6f2fa8128d39
-# https://surendraredd.github.io/Books/concepts.html
-# https://medium.com/gustavorsantos/streamlit-basics-build-your-first-web-app-ffd377a85666
-# https://towardsdatascience.com/urban-logistics-network-simulation-in-python-60b0132375f9
-# https://towardsdatascience.com/creating-interactive-maps-for-instagram-with-python-and-folium-68bc4691d075
+    
 
 
-#https://towardsdatascience.com/making-docker-and-conda-play-well-together-eda0ff995e3c#:~:text=Docker%20and%20Docker-Compose%20are%20great%20utilities%20that%20support,of%20containerization%20that%20is%20limited%20to%20python%20packages.
+
+with col2h:
+    st.markdown('#')
+    st.markdown('#')
+    st.markdown('#')
+    
+
+    '''AREAS OF ADVOCACY THAT ARE IMPORTANT TO THE
+       MS COMMUNITY'''
