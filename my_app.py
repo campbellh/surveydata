@@ -817,7 +817,7 @@ with col1d:
     else:
         pass
 
-    fig.text(0.09, 1, 'Priorities', fontsize=15, fontweight='bold', fontfamily='sans')
+    #fig.text(0.09, 1, 'Priorities', fontsize=15, fontweight='bold', fontfamily='sans')
 
     plt.box(False)
 
@@ -918,7 +918,7 @@ with col2e:
     else:
         pass
 
-    fig.text(0.09, 1, 'RESEARCH TYPES', fontsize=15, fontweight='bold', fontfamily='sans')
+    #fig.text(0.09, 1, 'RESEARCH TYPES', fontsize=15, fontweight='bold', fontfamily='sans')
 
     plt.box(False)
 
@@ -1007,7 +1007,7 @@ with col1f:
     else:
         pass
 
-    fig.text(0.09, 1, 'SYMPTOMS', fontsize=15, fontweight='bold', fontfamily='sans')
+    #fig.text(0.09, 1, 'SYMPTOMS', fontsize=15, fontweight='bold', fontfamily='sans')
 
     plt.box(False)
 
@@ -1100,7 +1100,7 @@ with col2g:
     
 
 
-    fig.text(0.09, 1, 'TERMINOLOGY', fontsize=15, fontweight='bold', fontfamily='sans')
+    #fig.text(0.09, 1, 'TERMINOLOGY', fontsize=15, fontweight='bold', fontfamily='sans')
     #fig.text(0.09, 0.95, 'The three most frequent countries have been highlighted.', fontsize=12, fontweight='light', fontfamily='sans')
 
     plt.box(False)
@@ -1173,7 +1173,7 @@ with col1h:
     #ax.bar(df_advocacy.columns, df_advocacy.iloc[6,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[5],bottom=df_advocacy.T.loc[1,:]+df_advocacy.T.loc[2,:]+df_advocacy.T.loc[3,:]+df_advocacy.T.loc[4,:]+df_advocacy.T.loc[5,:])
 
 
-    fig.text(0.09, 1, 'ADVOCACY', fontsize=15, fontweight='bold', fontfamily='sans')
+    #fig.text(0.09, 1, 'ADVOCACY', fontsize=15, fontweight='bold', fontfamily='sans')
     #fig.text(0.09, 0.95, 'The three most frequent countries have been highlighted.', fontsize=12, fontweight='light', fontfamily='sans')
 
     plt.box(False)
