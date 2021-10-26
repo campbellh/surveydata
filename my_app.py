@@ -1144,6 +1144,7 @@ with col1h:
     st.markdown('#')
     st.subheader('| ADVOCACY')
 
+    rank5=st.slider('0=Top Rank, 5= Lowest Rank',min_value=0, max_value=5)
 
     df_adv=dffilter.iloc[:,116:127]
     df_adv.columns=df_adv.columns.droplevel(0)
@@ -1165,12 +1166,29 @@ with col1h:
 
 
     fig, ax = plt.subplots(1,1, figsize=(12, 6))
-    ax.bar(df_advocacy.columns, df_advocacy.iloc[0,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[0])
-    ax.bar(df_advocacy.columns, df_advocacy.iloc[1,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[1],bottom=df_advocacy.iloc[0,:])
-    ax.bar(df_advocacy.columns, df_advocacy.iloc[2,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[2],bottom=df_advocacy.iloc[0,:]+df_advocacy.iloc[1,:])
-    ax.bar(df_advocacy.columns, df_advocacy.iloc[3,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[3],bottom=df_advocacy.iloc[0,:]+df_advocacy.iloc[1,:]+df_advocacy.iloc[2,:])
-    ax.bar(df_advocacy.columns, df_advocacy.iloc[4,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[4],bottom=df_advocacy.iloc[0,:]+df_advocacy.iloc[1,:]+df_advocacy.iloc[2,:]+df_advocacy.iloc[3,:])
+    if rank5>=0:
+        ax.bar(df_advocacy.columns, df_advocacy.iloc[0,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[0])
+    else:
+        pass
+
+    if rank5>=1:
+        ax.bar(df_advocacy.columns, df_advocacy.iloc[1,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[1],bottom=df_advocacy.iloc[0,:])
+    else:
+        pass
+    if rank5>=2:
+        ax.bar(df_advocacy.columns, df_advocacy.iloc[2,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[2],bottom=df_advocacy.iloc[0,:]+df_advocacy.iloc[1,:])
+    else:
+        pass
+
+    if rank5>=3:
+        ax.bar(df_advocacy.columns, df_advocacy.iloc[3,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[3],bottom=df_advocacy.iloc[0,:]+df_advocacy.iloc[1,:]+df_advocacy.iloc[2,:])
+    else:
+        pass
+    if rank5>=4:
+        ax.bar(df_advocacy.columns, df_advocacy.iloc[4,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[4],bottom=df_advocacy.iloc[0,:]+df_advocacy.iloc[1,:]+df_advocacy.iloc[2,:]+df_advocacy.iloc[3,:])
     #ax.bar(df_advocacy.columns, df_advocacy.iloc[6,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[5],bottom=df_advocacy.T.loc[1,:]+df_advocacy.T.loc[2,:]+df_advocacy.T.loc[3,:]+df_advocacy.T.loc[4,:]+df_advocacy.T.loc[5,:])
+    else:
+        pass
 
 
     #fig.text(0.09, 1, 'ADVOCACY', fontsize=15, fontweight='bold', fontfamily='sans')
