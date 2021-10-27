@@ -454,7 +454,7 @@ with col2a:
 
     st.markdown('#')
     st.markdown('#')
-    st.text("THE SURVEY POPULATION IS REPSRESENTATIVE OF THE \n AUSTRALIAN MS POPULATION")
+    st.text("THE SURVEY POPULATION IS REPRESENTATIVE OF THE \n AUSTRALIAN MS POPULATION")
 
 
 ############################################################################################################################
@@ -919,7 +919,7 @@ else:
         reorderlist=('Very high priority', 'High priority', 'Medium priority',"Don't know",'Low priority', 'Not a priority')
 
         df_new_q3.fillna(0, inplace=True)
-        df_new_q3=df_new_q3.rename(columns={"‘Basic' laboratory-based research to understand the cause and biology of MS – likely to have an impact on people with MS in the longer term (10 years or more)": 'Laboratory based research', "‘Translational' research that may develop into a clinical application within 5 years or less":'Translational Research',"‘Clinical' studies and clinical trials that are likely to have an immediate impact once the study is completed": 'Clincial Studies'})
+        df_new_q3=df_new_q3.rename(columns={"‘Basic' laboratory-based research to understand the cause and biology of MS – likely to have an impact on people with MS in the longer term (10 years or more)": 'Laboratory based research', "‘Translational' research that may develop into a clinical application within 5 years or less":'Translational Research',"‘Clinical' studies and clinical trials that are likely to have an immediate impact once the study is completed": 'Clinical Studies'})
         researchtypes=df_new_q3.reindex(reorderlist).T.sort_values(by='Very high priority', ascending=False)
         rank2a=st.slider('1=Very High Priority, 6= Not a priority',min_value=1, max_value=6,step=1)
         
@@ -1078,7 +1078,7 @@ else:
         st.markdown('#')
 
 
-        ''' THE INDICATED PRIORITY TO BE PLACED ON RESERACH INTO TREATING
+        ''' THE INDICATED PRIORITY TO BE PLACED ON RESEARCH INTO TREATING
             OR MANAGING DIFFERENT MS SYMPTOMS'''
 
 st.markdown('#')
