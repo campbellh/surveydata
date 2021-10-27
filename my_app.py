@@ -256,7 +256,7 @@ australiafilter=df[df['country', 'Unnamed: 186_level_1']=='Australia'].index
 
 st.markdown('---')
 
-st.subheader('| BACIS DEMOGRAPHIC DATA')
+st.subheader('| BASIC DEMOGRAPHIC DATA')
 
 if(dffilter.shape[0] <=30):
     st.warning('THE SUBGROUP YOU HAVE SELECETED CONTAINS LESS THAN 30 PEOPLE, AND THEREFORE NO SIGNIFICANT CONCLUSIONS CAN BE DRAWN')
@@ -719,8 +719,8 @@ else:
         st.markdown('#')
         st.markdown('#')
 
-        ''' "PLEASE RANK THE FOLLOWING GOALS IN ORDER FROM 1 (MOST IMPORTANT) 
-            TO 6 THE LEAST IMPORTANT) AND USE EACH NUMBER ONLY ONCE"'''
+        ''' PLEASE RANK THE FOLLOWING GOALS IN ORDER FROM 1 (MOST IMPORTANT) 
+            TO 6 (THE LEAST IMPORTANT) AND USE EACH NUMBER ONLY ONCE'''
 
     col1e, col2e= st.columns(2)
 
@@ -875,9 +875,9 @@ else:
     with col2d:
 
         st.markdown('#')
-        '''" QUESTION -INDICATE HOW IMPORTANT YOU FEEL EACH OF THESE RESEARCH
+        '''INDICATE HOW IMPORTANT YOU FEEL EACH OF THESE RESEARCH
             STREAMS ARE TO YOU. YOU DO NOT NEED TO RANK THEM RELATIVE TO EACH
-            OTHER"'''
+            OTHER'''
 
 
 
@@ -1099,7 +1099,7 @@ else:
         st.markdown('#')
         
 
-        '''LANGUAGE USAGE IS EVERY IMPORTANT TO EMPOWER PEOPLE WITH MS
+        '''LANGUAGE USAGE IS VERY IMPORTANT TO EMPOWER PEOPLE WITH MS
            AND TO REDUCE BIASES- THEREFORE WE ASKED THE COMMUNITY TO
            RANK TERMS USED TO DESCRIBE SOMEONE WITH MS'''
 
