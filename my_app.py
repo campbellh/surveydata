@@ -258,6 +258,11 @@ st.markdown('---')
 
 st.subheader('| BACIS DEMOGRAPHIC DATA')
 
+if(dffilter.shape[0] <=30):
+    st.warning('THE SUBGROUP YOU HAVE SELECETED CONTAINS LESS THAN 30 PEOPLE, AND THEREFORE NO SIGNIFICANT CONCLUSIONS CAN BE DRAWN')
+else:
+    pass
+
 st.markdown('#')
 ############################################################################################################################################
 
@@ -299,7 +304,7 @@ with col2:
                    va = 'center', ha='center',fontweight='light', fontfamily='sans')
 
  
-    grid_y_ticks = np.arange(0, round((remotenessdata.max()+200),-1), 100) # y ticks, min, max, then step
+    grid_y_ticks = np.arange(0, round((remotenessdata.sum().max()+200),-1), round(((remotenessdata.sum().max()+200)/4),-1)) # y ticks, min, max, then step
     ax.set_yticks(grid_y_ticks)
     #ax.set_axisbelow(True)
 
@@ -319,7 +324,7 @@ st.markdown('#')
 
 
 
-st.text(f'BREAK DOWN BY SEX - {status}')
+st.text(f'BREAK DOWN BY SEX')
 
 #gendercounts=df[df['Do you have MS (or suspected MS, e.g. clinically isolated syndrome)?', 'Response'] == 'Yes']['What is your gender?', 'Response'].value_counts()
 gendercounts=dffilter['What is your gender?', 'Response'].value_counts()
@@ -351,7 +356,7 @@ for i in gendercounts.index:
     
 for i in range(1,2):
     ax.annotate(f"{int(gendercounts[i])}", 
-              xy=(gendercounts['Female']+gendercounts['Male']/2, 0.0),
+              xy=(gendercounts['Female']+gendercounts['Male']*0.5, 0.0),
               va = 'center', ha='center',fontsize=40, fontweight='light', fontfamily='sans',
               color='white')
     ax.annotate("Male", 
@@ -391,7 +396,7 @@ st.pyplot(fig, use_container_width=True)
 ageorder=('Under 18','18-30','31-50', '51-60', 'Over 60','Prefer not to say')
 agecounts=dffilter['What is your age?', 'Response'].value_counts(sort=False).reindex(ageorder).fillna(0)
 
-
+#st.text(agecounts.sum())
 
 st.markdown('#')
 
@@ -399,47 +404,51 @@ st.markdown('#')
 col1a, col2a= st.columns(2)
 # column 1
 with col1a:
-    
-    fig2, ax = plt.subplots(1,1, figsize=(12, 6))
-    ax.bar(agecounts.index, agecounts, width=0.5, 
-           edgecolor='darkgray',
-        linewidth=0.6,color=sns.color_palette("deep", 6))#'#d52b1e')
-
-
-    fig2.text(0.09, 1, 'Age', fontsize=15, fontweight='bold', fontfamily='sans')
-    #fig.text(0.09, 0.95, 'The three most frequent countries have been highlighted.', fontsize=12, fontweight='light', fontfamily='sans')
-
-    plt.box(False)
-
-    for s in ['top', 'left', 'right']:
-        ax.spines[s].set_visible(False)
+    if(agecounts.sum()<30):
+        st.warning('THE NUMBER IN THE SELECTED POPULATION IS TOO LOW TO DISPLAY REPRESENTATIVE DATA. PLEASE SELECT A SUBGROUP WITH AT LEAST 30 PEOPLE')
+    else:
         
-    plt.grid(axis='y',color = 'grey', linestyle = '--', linewidth = 0.25) 
 
-    # Tick labels
-
-    for i in agecounts.index:
-        ax.annotate(f"{agecounts[i]}", 
-                       xy=(i, agecounts[i]*1.1), #i like to change this to roughly 5% of the highest cat
-                       va = 'center', ha='center',fontweight='light', fontfamily='sans')
-
-     
+        fig2, ax = plt.subplots(1,1, figsize=(12, 6))
+        ax.bar(agecounts.index, agecounts, width=0.5, 
+               edgecolor='darkgray',
+            linewidth=0.6,color=sns.color_palette("deep", 6))#'#d52b1e')
 
 
-    grid_y_ticks = np.arange(0, (agecounts.max()*1.5), round((agecounts.max()*1.5/4),-1)) # y ticks, min, max, then step
-    ax.set_yticks(grid_y_ticks)
-    #ax.set_axisbelow(True)
+        fig2.text(0.09, 1, 'Age', fontsize=15, fontweight='bold', fontfamily='sans')
+        #fig.text(0.09, 0.95, 'The three most frequent countries have been highlighted.', fontsize=12, fontweight='light', fontfamily='sans')
 
-    plt.axhline(y = 0, color = 'black', linewidth = 1.8, alpha = 0.7)
+        plt.box(False)
 
-    plt.axvline(x = -0.5, color = 'black', linewidth = 1, alpha = 0.7)
+        for s in ['top', 'left', 'right']:
+            ax.spines[s].set_visible(False)
+            
+        plt.grid(axis='y',color = 'grey', linestyle = '--', linewidth = 0.25) 
 
-    #ax.tick_params(axis='both', which='major', labelsize=12)
+        # Tick labels
+
+        for i in agecounts.index:
+            ax.annotate(f"{agecounts[i]}", 
+                           xy=(i, agecounts[i]*1.1), #i like to change this to roughly 5% of the highest cat
+                           va = 'center', ha='center',fontweight='light', fontfamily='sans')
+
+         
 
 
-    ax.set_xticklabels(agecounts.index, fontfamily='sans', rotation=45, fontdict={'horizontalalignment':'right'});
+        grid_y_ticks = np.arange(0, (agecounts.max()*1.5), round((agecounts.max()*1.5/4),-1)) # y ticks, min, max, then step
+        ax.set_yticks(grid_y_ticks)
+        #ax.set_axisbelow(True)
 
-    st.pyplot(fig2, use_container_width=True)
+        plt.axhline(y = 0, color = 'black', linewidth = 1.8, alpha = 0.7)
+
+        plt.axvline(x = -0.5, color = 'black', linewidth = 1, alpha = 0.7)
+
+        #ax.tick_params(axis='both', which='major', labelsize=12)
+
+
+        ax.set_xticklabels(agecounts.index, fontfamily='sans', rotation=45, fontdict={'horizontalalignment':'right'});
+
+        st.pyplot(fig2, use_container_width=True)
 
 with col2a:
 
@@ -452,6 +461,13 @@ with col2a:
 
 st.subheader('| DEMOGRAPHICS OF THE MS POPULATION')
 
+if (status =='Person With MS'):
+    pass
+elif (status == 'All'):
+    pass
+    
+else:
+    st.warning('TO SEE THE DEMOGRAPHICS OF THE MS POPULATION YOU NEED TO SELECT PERSON WITH MS ON THE LEFT HAND SIDE PANEL')
 
 col1b, col2b= st.columns(2)
 
@@ -544,7 +560,7 @@ col1c, col2c= st.columns(2)
 with col1c:
     durationorder=('Less than a year','1-4 years','5-10 years','11-19 years','More than 20 years','I don’t know')
     fig, ax = plt.subplots(1,1, figsize=(12, 6))
-    ax.bar(df['How long ago were you diagnosed?','Response'].value_counts(sort=False).reindex(durationorder).index, df['How long ago were you diagnosed?','Response'].value_counts(sort=False).reindex(durationorder), width=0.5, 
+    ax.bar(dffilter['How long ago were you diagnosed?','Response'].value_counts(sort=False).reindex(durationorder).index, dffilter['How long ago were you diagnosed?','Response'].value_counts(sort=False).reindex(durationorder), width=0.5, 
            edgecolor='darkgray',
            linewidth=0.6,color=sns.color_palette("deep", 6))#'#d52b1e')
 
@@ -561,9 +577,9 @@ with col1c:
 
     # Tick labels
 
-    for i in df['How long ago were you diagnosed?','Response'].value_counts(sort=False).reindex(durationorder).index:
-        ax.annotate(f"{df['How long ago were you diagnosed?','Response'].value_counts(sort=False).reindex(durationorder)[i]}", 
-                       xy=(i, df['How long ago were you diagnosed?','Response'].value_counts(sort=False).reindex(durationorder)[i] + 25), #i like to change this to roughly 5% of the highest cat
+    for i in dffilter['How long ago were you diagnosed?','Response'].value_counts(sort=False).reindex(durationorder).index:
+        ax.annotate(f"{dffilter['How long ago were you diagnosed?','Response'].value_counts(sort=False).reindex(durationorder)[i]}", 
+                       xy=(i, dffilter['How long ago were you diagnosed?','Response'].value_counts(sort=False).reindex(durationorder)[i] + 25), #i like to change this to roughly 5% of the highest cat
                        va = 'center', ha='center',fontweight='light', fontfamily='sans')
 
      
@@ -579,12 +595,12 @@ with col1c:
     #ax.tick_params(axis='both', which='major', labelsize=12)
 
 
-    ax.set_xticklabels(df['How long ago were you diagnosed?','Response'].value_counts(sort=False).reindex(durationorder).index, fontfamily='sans', rotation=45, fontdict={'horizontalalignment':'right'});
+    ax.set_xticklabels(dffilter['How long ago were you diagnosed?','Response'].value_counts(sort=False).reindex(durationorder).index, fontfamily='sans', rotation=45, fontdict={'horizontalalignment':'right'});
     st.pyplot(fig, use_container_width=True)
 
     with col2c:
         st.markdown('#')
-        st.text('A statistically representative sample of the Australian\nMS community when compared with AMSLS, TMPGS, NZMSP')
+        st.text('A STATISTICALLY REPRESENTATIVE SAMPLE OF THE AUSTRALIAN\nMS COMMUNITY WHEN COMPARED TO AMSLS, TMPGS, NZMSP')
         
 
         # if (df['How long ago were you diagnosed?','Response'].value_counts(sort=False).max())<=3:
@@ -594,261 +610,274 @@ with col1c:
 
 st.subheader('| RESEARCH PRIORITIES')
 
-col1d, col2d= st.columns(2)
-
-with col1d:
-    if (df['How long ago were you diagnosed?','Response'].value_counts(sort=False).max())<=3:
-             st.error("There is not enough numbers in this subsection to produce statistically meaningful results")
-    else:
-         pass
-
-    #Preparing the data for research priorities graph
-    df_q1=dffilter.iloc[:,9:15]
-    df_q1.columns=df_q1.columns.droplevel(0)
+if(dffilter.shape[0] <=30):
+    st.warning('THE SUBGROUP YOU HAVE SELECETED CONTAINS LESS THAN 30 PEOPLE, AND THEREFORE NO SIGNIFICANT CONCLUSIONS CAN BE DRAWN')
+else:
+    
 
 
-    df_new=pd.DataFrame() #(index=[range(1,7,1)])
+    col1d, col2d= st.columns(2)
 
-    for i in range(df_q1.shape[1]):
+    with col1d:
+        if (df['How long ago were you diagnosed?','Response'].value_counts(sort=False).max())<=3:
+                 st.error("There is not enough numbers in this subsection to produce statistically meaningful results")
+        else:
+             pass
+
+        #Preparing the data for research priorities graph
+        df_q1=dffilter.iloc[:,9:15]
+        df_q1.columns=df_q1.columns.droplevel(0)
+
+
+        df_new=pd.DataFrame() #(index=[range(1,7,1)])
+
+        for i in range(df_q1.shape[1]):
+            
+            df_n=pd.DataFrame(df_q1.iloc[:,i].value_counts(normalize=False).sort_index())
+            #df_new=pd.merge(df_new, df_n, right_index=True, left_index=True)
+            df_new=pd.concat([df_new, df_n], axis=1)
+            #print(df_n)
+
+        rank=st.slider('1=top rank, 5= lowest rank',min_value=1, max_value=5)
+
+
+        df_new=df_new[['Finding a cure for MS via repair and regeneration of cells',
+               'Preventing MS',
+               'Better treating MS (preventing relapses and disease progression)',
+               'Improving the diagnosis of MS',
+               'Improving MS management and care (symptoms, rehabilitation and support)',
+               "Predicting an individual's disease course (prognosis)"]]
+        df_new.rename(columns={'Finding a cure for MS via repair and regeneration of cells': 'Finding a cure'}, inplace=True)
+
+        prioritiesdata=df_new
+        prioritiesdata.fillna(0, inplace=True)
+
+        fig, ax = plt.subplots(1,1, figsize=(12, 5))
+        if rank>=1:
+
+            ax.bar(prioritiesdata.columns, prioritiesdata.loc[1,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[0])
+        else:
+            pass
+        if rank>=2:
+            ax.bar(prioritiesdata.columns, prioritiesdata.loc[2,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[1],bottom=prioritiesdata.loc[1,:])
+        else:
+            pass
+        if rank>=3:    
+            ax.bar(prioritiesdata.columns, prioritiesdata.loc[3,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[2],bottom=prioritiesdata.loc[1,:]+prioritiesdata.loc[2,:])
+        else:
+            pass
+        if rank>=4:
+            ax.bar(prioritiesdata.columns, prioritiesdata.loc[4,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[3],bottom=prioritiesdata.loc[1,:]+prioritiesdata.loc[2,:]+prioritiesdata.loc[3,:])
+        else:
+            pass
+        if rank>=5:
+            ax.bar(prioritiesdata.columns, prioritiesdata.loc[5,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[4],bottom=prioritiesdata.loc[1,:]+prioritiesdata.loc[2,:]+prioritiesdata.loc[3,:]+prioritiesdata.loc[4,:])
+        else:
+            pass
+        if rank>=6:
+            ax.bar(prioritiesdata.columns, prioritiesdata.loc[6,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[5],bottom=prioritiesdata.loc[1,:]+prioritiesdata.loc[2,:]+prioritiesdata.loc[3,:]+prioritiesdata.loc[4,:]+prioritiesdata.loc[5,:])
+        else:
+            pass
+        #fig.text(0.09, 1, 'Priorities', fontsize=15, fontweight='bold', fontfamily='sans')
+
+        plt.box(False)
+
+        for s in ['top', 'left', 'right']:
+            ax.spines[s].set_visible(False)
+            
+        plt.grid(axis='y',color = 'grey', linestyle = '--', linewidth = 0.25) 
+
+        # Tick labels
+
+        # for i in range(prioritiesdata.shape[0]):
+        #     ax.annotate(f"{prioritiesdata[i]}", 
+        #                    xy=(i, prioritiesdata[i] + 2), #i like to change this to roughly 5% of the highest cat
+        #                    va = 'center', ha='center',fontweight='light', fontfamily='sans')
+
+         
+
+
+        grid_y_ticks = np.arange(0, prioritiesdata.sum().max()*1.1, round((prioritiesdata.sum().max()*1.1/10),-1)) # y ticks, min, max, then step
+        ax.set_yticks(grid_y_ticks)
+        #ax.set_axisbelow(True)
+
+        plt.axhline(y = 0, color = 'black', linewidth = 1.8, alpha = 0.7)
+
+        plt.axvline(x = -0.5, color = 'black', linewidth = 1, alpha = 0.7)
+
+        #ax.tick_params(axis='both', which='major', labelsize=12)
+
+
+        ax.set_xticklabels([s.split('(')[0] for s in prioritiesdata.columns], fontfamily='sans', rotation=45, fontdict={'horizontalalignment':'right'});
+
+
+        st.pyplot(fig, use_container_width=True)
+
+
+    with col2d:
+
+        st.markdown('#')
+        st.markdown('#')
+
+        ''' "PLEASE RANK THE FOLLOWING GOALS IN ORDER FROM 1 (MOST IMPORTANT) 
+            TO 6 THE LEAST IMPORTANT) AND USE EACH NUMBER ONLY ONCE"'''
+
+    col1e, col2e= st.columns(2)
+
+
+    with col1e:
+
+        st.markdown('#')
+        st.markdown('#')
+
+        ''' PRIORITIES RANKING DISPLAYED AS A WEIGHTED AVERAGE, GIVING EACH
+            RANK A WEIGHT RESULTING IN A TOTAL SCORE FOR EACH PRIORITY'''
+
+    with col2e:
+
+        df_new3=pd.DataFrame() 
         
-        df_n=pd.DataFrame(df_q1.iloc[:,i].value_counts(normalize=False).sort_index())
-        #df_new=pd.merge(df_new, df_n, right_index=True, left_index=True)
-        df_new=pd.concat([df_new, df_n], axis=1)
-        #print(df_n)
-
-    rank=st.slider('1=top rank, 5= lowest rank',min_value=1, max_value=5)
-
-
-    df_new=df_new[['Finding a cure for MS via repair and regeneration of cells',
-           'Preventing MS',
-           'Better treating MS (preventing relapses and disease progression)',
-           'Improving the diagnosis of MS',
-           'Improving MS management and care (symptoms, rehabilitation and support)',
-           "Predicting an individual's disease course (prognosis)"]]
-    df_new.rename(columns={'Finding a cure for MS via repair and regeneration of cells': 'Finding a cure'}, inplace=True)
-
-    prioritiesdata=df_new
-
-    fig, ax = plt.subplots(1,1, figsize=(12, 5))
-    if rank>=1:
-
-        ax.bar(prioritiesdata.columns, prioritiesdata.loc[1,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[0])
-    else:
-        pass
-    if rank>=2:
-        ax.bar(prioritiesdata.columns, prioritiesdata.loc[2,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[1],bottom=prioritiesdata.loc[1,:])
-    else:
-        pass
-    if rank>=3:    
-        ax.bar(prioritiesdata.columns, prioritiesdata.loc[3,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[2],bottom=prioritiesdata.loc[1,:]+prioritiesdata.loc[2,:])
-    else:
-        pass
-    if rank>=4:
-        ax.bar(prioritiesdata.columns, prioritiesdata.loc[4,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[3],bottom=prioritiesdata.loc[1,:]+prioritiesdata.loc[2,:]+prioritiesdata.loc[3,:])
-    else:
-        pass
-    if rank>=5:
-        ax.bar(prioritiesdata.columns, prioritiesdata.loc[5,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[4],bottom=prioritiesdata.loc[1,:]+prioritiesdata.loc[2,:]+prioritiesdata.loc[3,:]+prioritiesdata.loc[4,:])
-    else:
-        pass
-    if rank>=6:
-        ax.bar(prioritiesdata.columns, prioritiesdata.loc[6,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[5],bottom=prioritiesdata.loc[1,:]+prioritiesdata.loc[2,:]+prioritiesdata.loc[3,:]+prioritiesdata.loc[4,:]+prioritiesdata.loc[5,:])
-    else:
-        pass
-    #fig.text(0.09, 1, 'Priorities', fontsize=15, fontweight='bold', fontfamily='sans')
-
-    plt.box(False)
-
-    for s in ['top', 'left', 'right']:
-        ax.spines[s].set_visible(False)
+        for i in range(df_q1.shape[1]):
         
-    plt.grid(axis='y',color = 'grey', linestyle = '--', linewidth = 0.25) 
+            df_n=pd.DataFrame(df_q1.iloc[:,i].value_counts().sort_index(ascending=True))
+            df_new3=pd.concat([df_new3, df_n], axis=1)
+        
+        
+        df_new3['score']=[6,5,3,4,2,1]
 
-    # Tick labels
+        scores=[]
+        prior=[]
 
-    # for i in range(prioritiesdata.shape[0]):
-    #     ax.annotate(f"{prioritiesdata[i]}", 
-    #                    xy=(i, prioritiesdata[i] + 2), #i like to change this to roughly 5% of the highest cat
-    #                    va = 'center', ha='center',fontweight='light', fontfamily='sans')
+        for i in range (df_new3.shape[1]-1):
+            prior.append(df_new3.iloc[:,i].name)
+            scores.append(((sum(df_new3.iloc[:,i]* df_new3['score']))/df_new.shape[1])/1)
+        
+        
+        series_obj = pd.Series(scores, index=prior)
 
-     
-
-
-    grid_y_ticks = np.arange(0, prioritiesdata.iloc[:rank,0].sum()*1.1, round(((prioritiesdata.iloc[:,0].sum()*1.1)/10),-1)) # y ticks, min, max, then step
-    ax.set_yticks(grid_y_ticks)
-    #ax.set_axisbelow(True)
-
-    plt.axhline(y = 0, color = 'black', linewidth = 1.8, alpha = 0.7)
-
-    plt.axvline(x = -0.5, color = 'black', linewidth = 1, alpha = 0.7)
-
-    #ax.tick_params(axis='both', which='major', labelsize=12)
+        series_obj.rename(index={'Finding a cure for MS via repair and regeneration of cells': 'Finding a cure'}, inplace=True)
 
 
-    ax.set_xticklabels([s.split('(')[0] for s in prioritiesdata.columns], fontfamily='sans', rotation=45, fontdict={'horizontalalignment':'right'});
+        fig, ax = plt.subplots(1,1, figsize=(12, 6))
+
+        ax.bar(series_obj.sort_values(ascending=False).index, series_obj.sort_values(ascending=False),width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6))
+
+        fig.text(0.09, 1, 'WEIGHTED AVERAGE OF ALL PRIORITIES RANKED', fontsize=15, fontweight='bold', fontfamily='sans')
+
+        plt.box(False)
+
+        for s in ['top', 'left', 'right']:
+            ax.spines[s].set_visible(False)
+        
+        plt.grid(axis='y',color = 'grey', linestyle = '--', linewidth = 0.25) 
+
+        grid_y_ticks = np.arange(0, series_obj.max()*1.2, ((series_obj.max()*1.2)/4)) # y ticks, min, max, then step
+        ax.set_yticks(grid_y_ticks)
 
 
-    st.pyplot(fig, use_container_width=True)
+        plt.axhline(y = 0, color = 'black', linewidth = 1.8, alpha = 0.7)
+
+        plt.axvline(x = -0.5, color = 'black', linewidth = 1, alpha = 0.7)
+
+        ax.set_xticklabels([s.split('(')[0] for s in series_obj.index], fontfamily='sans', rotation=45, fontdict={'horizontalalignment':'right'});
 
 
-with col2d:
-
-    st.markdown('#')
-    st.markdown('#')
-
-    ''' "PLEASE RANK THE FOLLOWING GOALS IN ORDER FROM 1 (MOST IMPORTANT) 
-        TO 6 THE LEAST IMPORTANT) AND USE EACH NUMBER ONLY ONCE"'''
-
-col1e, col2e= st.columns(2)
-
-
-with col1e:
-
-    st.markdown('#')
-    st.markdown('#')
-
-    ''' PRIORITIES RANKING DISPLAYED AS A WEIGHTED AVERAGE, GIVING EACH
-        RANK A WEIGHT RESULTING IN A TOTAL SCORE FOR EACH PRIORITY'''
-
-with col2e:
-
-    df_new3=pd.DataFrame() 
-    
-    for i in range(df_q1.shape[1]):
-    
-        df_n=pd.DataFrame(df_q1.iloc[:,i].value_counts().sort_index(ascending=True))
-        df_new3=pd.concat([df_new3, df_n], axis=1)
-    
-    
-    df_new3['score']=[6,5,3,4,2,1]
-
-    scores=[]
-    prior=[]
-
-    for i in range (df_new3.shape[1]-1):
-        prior.append(df_new3.iloc[:,i].name)
-        scores.append(((sum(df_new3.iloc[:,i]* df_new3['score']))/df_new.shape[1])/1)
-    
-    
-    series_obj = pd.Series(scores, index=prior)
-
-    series_obj.rename(index={'Finding a cure for MS via repair and regeneration of cells': 'Finding a cure'}, inplace=True)
-
-
-    fig, ax = plt.subplots(1,1, figsize=(12, 6))
-
-    ax.bar(series_obj.sort_values(ascending=False).index, series_obj.sort_values(ascending=False),width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6))
-
-    fig.text(0.09, 1, 'WEIGHTED AVERAGE OF ALL PRIORITIES RANKED', fontsize=15, fontweight='bold', fontfamily='sans')
-
-    plt.box(False)
-
-    for s in ['top', 'left', 'right']:
-        ax.spines[s].set_visible(False)
-    
-    plt.grid(axis='y',color = 'grey', linestyle = '--', linewidth = 0.25) 
-
-    grid_y_ticks = np.arange(0, series_obj.max()*1.2, ((series_obj.max()*1.2)/4)) # y ticks, min, max, then step
-    ax.set_yticks(grid_y_ticks)
-
-
-    plt.axhline(y = 0, color = 'black', linewidth = 1.8, alpha = 0.7)
-
-    plt.axvline(x = -0.5, color = 'black', linewidth = 1, alpha = 0.7)
-
-    ax.set_xticklabels([s.split('(')[0] for s in series_obj.index], fontfamily='sans', rotation=45, fontdict={'horizontalalignment':'right'});
-
-
-    st.pyplot(fig, use_container_width=True)
+        st.pyplot(fig, use_container_width=True)
 
 
 st.subheader('| RESEARCH STREAMS')
 
-col1d, col2d= st.columns(2)
 
-
-with col1d:
-
-    rank2=st.slider('1=Very Important, 5= Not important',min_value=1, max_value=5)
-
-    df_q2=dffilter.iloc[:,15:20]
-    df_q2.columns=df_q2.columns.droplevel(0)
-
-    df_new2=pd.DataFrame() #(index=[range(1,7,1)])
-
-    for i in range(df_q2.shape[1]):
-        
-        df_n=pd.DataFrame(df_q2.iloc[:,i].value_counts().sort_index())
-        
-        df_new2=pd.concat([df_new2, df_n], axis=1)
-        
-    reorderlist3=('Very important', 'Important','Fairly important', "Don't know", 'Not very important', 'Not important at all')
-
-
-
-    df_new2.fillna(0, inplace=True)
-    researchstreams=df_new2.reindex(reorderlist3).T.sort_values(by='Very important', ascending=False)
+if(dffilter.shape[0] <=30):
+    st.warning('THE SUBGROUP YOU HAVE SELECETED CONTAINS LESS THAN 30 PEOPLE, AND THEREFORE NO SIGNIFICANT CONCLUSIONS CAN BE DRAWN')
+else:
     
 
-    fig, ax = plt.subplots(1,1, figsize=(12, 6))
-    if rank2>=1:
+    col1d, col2d= st.columns(2)
 
-        ax.bar(researchstreams.index, researchstreams.iloc[:,0],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[0])
-    else:
-        pass
-    if rank2>=2:
-        ax.bar(researchstreams.index, researchstreams.iloc[:,1],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[1],bottom=researchstreams.iloc[:,0])
-    else:
-        pass
-    if rank2>=3:    
-        ax.bar(researchstreams.index, researchstreams.iloc[:,2],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[2],bottom=researchstreams.iloc[:,0]+researchstreams.iloc[:,1])
-    else:
-        pass
-    if rank2>=4:
-        ax.bar(researchstreams.index, researchstreams.iloc[:,3],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[3],bottom=researchstreams.iloc[:,0]+researchstreams.iloc[:,1]+researchstreams.iloc[:,2])
-    else:
-        pass
-    if rank2>=5:
-        ax.bar(researchstreams.index, researchstreams.iloc[:,4],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[4],bottom=researchstreams.iloc[:,0]+researchstreams.iloc[:,1]+researchstreams.iloc[:,2]+researchstreams.iloc[:,3])
-    else:
-        pass
-    if rank>=6:
-        ax.bar(researchstreams.index, researchstreams.iloc[:,5],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[5],bottom=researchstreams.iloc[:,0]+researchstreams.iloc[:,1]+researchstreams.iloc[:,2]+researchstreams.iloc[:,3]+researchstreams.iloc[:,4])
-    else:
-        pass
 
-    #fig.text(0.09, 1, 'Priorities', fontsize=15, fontweight='bold', fontfamily='sans')
+    with col1d:
 
-    plt.box(False)
+        rank2=st.slider('1=Very Important, 5= Not important',min_value=1, max_value=5)
 
-    for s in ['top', 'left', 'right']:
-        ax.spines[s].set_visible(False)
+        df_q2=dffilter.iloc[:,15:20]
+        df_q2.columns=df_q2.columns.droplevel(0)
+
+        df_new2=pd.DataFrame() #(index=[range(1,7,1)])
+
+        for i in range(df_q2.shape[1]):
+            
+            df_n=pd.DataFrame(df_q2.iloc[:,i].value_counts().sort_index())
+            
+            df_new2=pd.concat([df_new2, df_n], axis=1)
+            
+        reorderlist3=('Very important', 'Important','Fairly important', "Don't know", 'Not very important', 'Not important at all')
+
+
+
+        df_new2.fillna(0, inplace=True)
+        researchstreams=df_new2.reindex(reorderlist3).T.sort_values(by='Very important', ascending=False)
         
-    plt.grid(axis='y',color = 'grey', linestyle = '--', linewidth = 0.25) 
+
+        fig, ax = plt.subplots(1,1, figsize=(12, 6))
+        if rank2>=1:
+
+            ax.bar(researchstreams.index, researchstreams.iloc[:,0],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[0])
+        else:
+            pass
+        if rank2>=2:
+            ax.bar(researchstreams.index, researchstreams.iloc[:,1],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[1],bottom=researchstreams.iloc[:,0])
+        else:
+            pass
+        if rank2>=3:    
+            ax.bar(researchstreams.index, researchstreams.iloc[:,2],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[2],bottom=researchstreams.iloc[:,0]+researchstreams.iloc[:,1])
+        else:
+            pass
+        if rank2>=4:
+            ax.bar(researchstreams.index, researchstreams.iloc[:,3],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[3],bottom=researchstreams.iloc[:,0]+researchstreams.iloc[:,1]+researchstreams.iloc[:,2])
+        else:
+            pass
+        if rank2>=5:
+            ax.bar(researchstreams.index, researchstreams.iloc[:,4],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[4],bottom=researchstreams.iloc[:,0]+researchstreams.iloc[:,1]+researchstreams.iloc[:,2]+researchstreams.iloc[:,3])
+        else:
+            pass
+        if rank>=6:
+            ax.bar(researchstreams.index, researchstreams.iloc[:,5],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[5],bottom=researchstreams.iloc[:,0]+researchstreams.iloc[:,1]+researchstreams.iloc[:,2]+researchstreams.iloc[:,3]+researchstreams.iloc[:,4])
+        else:
+            pass
+
+        #fig.text(0.09, 1, 'Priorities', fontsize=15, fontweight='bold', fontfamily='sans')
+
+        plt.box(False)
+
+        for s in ['top', 'left', 'right']:
+            ax.spines[s].set_visible(False)
+            
+        plt.grid(axis='y',color = 'grey', linestyle = '--', linewidth = 0.25) 
 
 
-    grid_y_ticks = np.arange(0, (researchstreams.max()[0]*1.1), ((researchstreams.max()[0]*1.1)/4)) # y ticks, min, max, then step
-    ax.set_yticks(grid_y_ticks)
-    #ax.set_axisbelow(True)
+        grid_y_ticks = np.arange(0, (researchstreams.max()[0]*1.1), ((researchstreams.max()[0]*1.1)/4)) # y ticks, min, max, then step
+        ax.set_yticks(grid_y_ticks)
+        #ax.set_axisbelow(True)
 
-    plt.axhline(y = 0, color = 'black', linewidth = 1.8, alpha = 0.7)
+        plt.axhline(y = 0, color = 'black', linewidth = 1.8, alpha = 0.7)
 
-    plt.axvline(x = -0.5, color = 'black', linewidth = 1, alpha = 0.7)
+        plt.axvline(x = -0.5, color = 'black', linewidth = 1, alpha = 0.7)
 
-    #ax.tick_params(axis='both', which='major', labelsize=12)
-
-
-    ax.set_xticklabels([s.split('(')[0] for s in researchstreams.index], fontfamily='sans', rotation=45, fontdict={'horizontalalignment':'right'});
+        #ax.tick_params(axis='both', which='major', labelsize=12)
 
 
-    st.pyplot(fig, use_container_width=True)
+        ax.set_xticklabels([s.split('(')[0] for s in researchstreams.index], fontfamily='sans', rotation=45, fontdict={'horizontalalignment':'right'});
 
-with col2d:
 
-    st.markdown('#')
-    '''" QUESTION -INDICATE HOW IMPORTANT YOU FEEL EACH OF THESE RESEARCH
-        STREAMS ARE TO YOU. YOU DO NOT NEED TO RANK THEM RELATIVE TO EACH
-        OTHER"'''
+        st.pyplot(fig, use_container_width=True)
+
+    with col2d:
+
+        st.markdown('#')
+        '''" QUESTION -INDICATE HOW IMPORTANT YOU FEEL EACH OF THESE RESEARCH
+            STREAMS ARE TO YOU. YOU DO NOT NEED TO RANK THEM RELATIVE TO EACH
+            OTHER"'''
 
 
 
@@ -1045,6 +1074,9 @@ with col2f:
 st.markdown('#')
 st.markdown('#')
 st.subheader('| TERMINOLOGY')
+st.text('(ONLY PEOPLE WITH MS WERE ASKED THIS QUESTION)')
+
+
 
 col1g, col2g= st.columns(2)
 
@@ -1064,77 +1096,81 @@ with col2g:
     st.markdown('#')
     st.markdown('#')
     
+    if (status == 'Person With MS') or (status == 'All'):
 
-    rank4=st.slider('1=Top Rank, 5= Lowest Rank',min_value=1, max_value=5)
+        rank4=st.slider('1=Top Rank, 5= Lowest Rank',min_value=1, max_value=5)
 
-    termology_df=dffilter.iloc[:,158:163]
-    termology_df.columns=termology_df.columns.droplevel(0)
+        termology_df=dffilter.iloc[:,158:163]
+        termology_df.columns=termology_df.columns.droplevel(0)
 
-    term_df=pd.DataFrame()
+        term_df=pd.DataFrame()
 
-    for i in range(termology_df.shape[1]):
-        term_df=pd.concat([term_df,termology_df.iloc[:,i].value_counts().to_frame()], axis=1)
+        for i in range(termology_df.shape[1]):
+            term_df=pd.concat([term_df,termology_df.iloc[:,i].value_counts().to_frame()], axis=1)
 
-    
-    fig, ax = plt.subplots(1,1, figsize=(12, 6))
-    if rank4>=1:
-        ax.bar(term_df.columns, term_df.iloc[0,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[0])
-    else:
-        pass
-    if rank4>=2:
-        ax.bar(term_df.columns, term_df.iloc[1,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[1],bottom=term_df.iloc[0,:])
-    else:
-        pass
-    if rank4>=3:    
-        ax.bar(term_df.columns, term_df.iloc[2,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[2],bottom=term_df.iloc[0,:]+term_df.iloc[1,:])
-    else:
-        pass
-    if rank4>=4:
-        ax.bar(term_df.columns, term_df.iloc[3,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[3],bottom=term_df.iloc[0,:]+term_df.iloc[1,:]+term_df.iloc[2,:])
-    else:
-        pass
-    if rank4>=5:
-        ax.bar(term_df.columns, term_df.iloc[4,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[4],bottom=term_df.iloc[0,:]+term_df.iloc[1,:]+term_df.iloc[2,:]+term_df.iloc[3,:])
-    else:
-        pass
-    
+        term_df.fillna(0, inplace=True)
 
-
-    #fig.text(0.09, 1, 'TERMINOLOGY', fontsize=15, fontweight='bold', fontfamily='sans')
-    #fig.text(0.09, 0.95, 'The three most frequent countries have been highlighted.', fontsize=12, fontweight='light', fontfamily='sans')
-
-    plt.box(False)
-
-    for s in ['top', 'left', 'right']:
-        ax.spines[s].set_visible(False)
+        fig, ax = plt.subplots(1,1, figsize=(12, 6))
+        if rank4>=1:
+            ax.bar(term_df.columns, term_df.iloc[0,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[0])
+        else:
+            pass
+        if rank4>=2:
+            ax.bar(term_df.columns, term_df.iloc[1,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[1],bottom=term_df.iloc[0,:])
+        else:
+            pass
+        if rank4>=3:    
+            ax.bar(term_df.columns, term_df.iloc[2,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[2],bottom=term_df.iloc[0,:]+term_df.iloc[1,:])
+        else:
+            pass
+        if rank4>=4:
+            ax.bar(term_df.columns, term_df.iloc[3,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[3],bottom=term_df.iloc[0,:]+term_df.iloc[1,:]+term_df.iloc[2,:])
+        else:
+            pass
+        if rank4>=5:
+            ax.bar(term_df.columns, term_df.iloc[4,:],width=0.5,edgecolor='darkgray',linewidth=0.6,color=sns.color_palette("deep", 6)[4],bottom=term_df.iloc[0,:]+term_df.iloc[1,:]+term_df.iloc[2,:]+term_df.iloc[3,:])
+        else:
+            pass
         
-    plt.grid(axis='y',color = 'grey', linestyle = '--', linewidth = 0.25) 
-
-    # Tick labels
-
-    # for i in term_df.T.shape[0]:
-    #     ax.annotate(f"{term_df.T[i]}", 
-    #                    xy=(i, term_df.T[i] + 2), #i like to change this to roughly 5% of the highest cat
-    #                    va = 'center', ha='center',fontweight='light', fontfamily='sans')
-
-     
 
 
-    grid_y_ticks = np.arange(0,((term_df.iloc[0,:].sum())*1.3), (((term_df.iloc[0,:].sum())*1.1)/4)) # y ticks, min, max, then step
-    ax.set_yticks(grid_y_ticks)
-    #ax.set_axisbelow(True)
+        #fig.text(0.09, 1, 'TERMINOLOGY', fontsize=15, fontweight='bold', fontfamily='sans')
+        #fig.text(0.09, 0.95, 'The three most frequent countries have been highlighted.', fontsize=12, fontweight='light', fontfamily='sans')
 
-    plt.axhline(y = 0, color = 'black', linewidth = 1.8, alpha = 0.7)
+        plt.box(False)
 
-    plt.axvline(x = -0.5, color = 'black', linewidth = 1, alpha = 0.7)
+        for s in ['top', 'left', 'right']:
+            ax.spines[s].set_visible(False)
+            
+        plt.grid(axis='y',color = 'grey', linestyle = '--', linewidth = 0.25) 
 
-    #ax.tick_params(axis='both', which='major', labelsize=12)
+        # Tick labels
+
+        # for i in term_df.T.shape[0]:
+        #     ax.annotate(f"{term_df.T[i]}", 
+        #                    xy=(i, term_df.T[i] + 2), #i like to change this to roughly 5% of the highest cat
+        #                    va = 'center', ha='center',fontweight='light', fontfamily='sans')
+
+         
 
 
-    ax.set_xticklabels(term_df.columns, fontfamily='sans', rotation=45, fontdict={'horizontalalignment':'right'});
+        grid_y_ticks = np.arange(0,((term_df.iloc[0,:].sum())*1.3), (((term_df.iloc[0,:].sum())*1.1)/4)) # y ticks, min, max, then step
+        ax.set_yticks(grid_y_ticks)
+        #ax.set_axisbelow(True)
 
-    st.pyplot(fig, use_container_width=True)
+        plt.axhline(y = 0, color = 'black', linewidth = 1.8, alpha = 0.7)
 
+        plt.axvline(x = -0.5, color = 'black', linewidth = 1, alpha = 0.7)
+
+        #ax.tick_params(axis='both', which='major', labelsize=12)
+
+
+        ax.set_xticklabels(term_df.columns, fontfamily='sans', rotation=45, fontdict={'horizontalalignment':'right'});
+
+        st.pyplot(fig, use_container_width=True)
+
+    else:
+        st.warning('NO DATA TO DISPLAY FOR THIS GRAPH PLEASE SELECT PERSON WITH MS ON THE LEFTHAND PANEL')
 
 
 col1h, col2h= st.columns(2)
