@@ -491,7 +491,7 @@ with col1b:
     # Tick labels
 
     for i in dffilter['What type of MS do you have?','Response'].value_counts(sort=True).index:
-        ax.annotate(f"{dffilter['What type of MS do you have?','Response'].value_counts(sort=True)[i]}", 
+        ax.annotate(f"{dffilter['What type of MS do you have?','Response'].value_counts(sort=True, normalize=False)[i]}", 
                        xy=(i, dffilter['What type of MS do you have?','Response'].value_counts(sort=True)[i] + 25), #i like to change this to roughly 5% of the highest cat
                        va = 'center', ha='center',fontweight='light', fontfamily='sans')
 
