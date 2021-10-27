@@ -200,8 +200,8 @@ st.subheader('| A comprehensive person centric feedback from the MS community')
 """
 To seek feedback on our current and future research strategy, MS Australia designed and
 implemented a survey with questions about the broad goals of MS research, as well as more targeted questions
-about how to acheive those goals. The survey also asked about the areas of advocacy that MS Australia should
-persue was wells as areas of stratgic importance. 
+about how to achieve those goals. The survey also asked about the areas of advocacy that MS Australia should
+pursue and areas of strategic importance. 
 """
 
 #Separator
@@ -222,7 +222,7 @@ with col1:
     st.title(total)
     st.text('PEOPLE TOOK THE SURVEY')
 # # column 2
-with col2:
+with col3:
     st.title(df[df['Do you have MS (or suspected MS, e.g. clinically isolated syndrome)?', 'Response']=='Yes'].shape[0])
     st.text('HAVE MS')
 
