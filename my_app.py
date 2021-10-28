@@ -124,7 +124,7 @@ else:
 
 if (status == 'Person With MS'):
 
-    filter_disease_impact =st.sidebar.radio('Filter By Disease Impact', options=['All', 'Living Well', 'Midly affected', 'Moderately affected', 'Significant level of disability'])
+    filter_disease_impact =st.sidebar.radio('Filter By Disease Impact', options=['All', 'Living Well', 'Mildly affected', 'Moderately affected', 'Significant level of disability'])
     if filter_disease_impact=='Living Well':
         dffilter=dffilter[dffilter['How are you affected by your MS? (select the one that most closely matches your circumstances)', 'Response']=='I am very well (no relapses or symptoms currently)']
     elif filter_disease_impact=='Mildly affected':
@@ -145,7 +145,7 @@ disabilitylabel_order=( 'Living well','Mildly affected','Moderately affected','S
 
 #----------------------------------------------------------------------------------------------------------------------
 if (status == 'Person With MS'):
-    filter_disease_type=st.sidebar.radio('Filter By Disease Type', options=['All', 'Relapsing Remitting MS', 'Secondary Progressive MS', 'Primary Progressive MS', 'Clinically Isolated syndrome', 'Other', "I don't know"])
+    filter_disease_type=st.sidebar.radio('Filter By Disease Type', options=['All', 'Relapsing Remitting MS', 'Secondary Progressive MS', 'Primary Progressive MS', 'Clinically Isolated Syndrome', 'Other', "I don't know"])
     if filter_disease_type=='Relapsing Remitting MS':
         dffilter=dffilter[dffilter['What type of MS do you have?', 'Response']=='Relapsing remitting MS']
     elif filter_disease_type=='Secondary Progressive MS':
