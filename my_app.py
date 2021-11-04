@@ -1,12 +1,12 @@
 # Imports
 import streamlit as st
 import streamlit.components.v1 as components
-
+import requests
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-
+from io import StringIO
 
 #import streamlit as st
 from PIL import Image
@@ -26,10 +26,11 @@ hide_menu_style = """
 st.markdown(hide_menu_style, unsafe_allow_html=True)
 
 
-
+#df=pd.read_csv("https://docs.google.com/spreadsheets/d/1ejvGVkTaSyEZj3L5Uclfg8opQ93qS5XTTS__ufwlmmY/export?format=csv&gid=20053498", header=[0,1])
+df=pd.read_csv(st.secrets["db_name"], header=[0,1])
 #-----------------------------------------------------------------------
-#df=pd.read_csv('locationdatadFINALFULL.csv', header=[0,1])
-df=pd.read_csv('data.csv', header=[0,1])
+
+#df=pd.read_csv('data.csv', header=[0,1])
 
 #-----------------------------------------------------------------------
 # SIDEBAR
