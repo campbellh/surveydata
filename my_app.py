@@ -344,46 +344,61 @@ plt.barh(gendercounts.index[0], gendercounts['Other'],left=gendercounts['Female'
 
 #plt.legend()
 plt.box(False)
+if filter_sex=='Female' or filter_sex=='All':
+    for i in gendercounts.index:
+        ax.annotate(f"{int(gendercounts[i])}", 
+                   xy=(gendercounts['Female']/2, i),
+                   va = 'center', ha='center',fontsize=40, fontweight='light', fontfamily='sans',
+                   color='white')
+        
+        ax.annotate("Female", 
+                    xy=(gendercounts['Female']/2, -0.25),
+                    va = 'center', ha='center',fontsize=15, fontweight='light', fontfamily='sans',
+                    color='white')
+else :
+    pass
 
-for i in gendercounts.index:
-    ax.annotate(f"{int(gendercounts[i])}", 
-               xy=(gendercounts['Female']/2, i),
-               va = 'center', ha='center',fontsize=40, fontweight='light', fontfamily='sans',
-               color='white')
-    ax.annotate("Female", 
-               xy=(gendercounts['Female']/2, -0.25),
-               va = 'center', ha='center',fontsize=15, fontweight='light', fontfamily='sans',
-               color='white')
+if filter_sex=='Male' or filter_sex=='All':
+    for i in range(1,2):
+        ax.annotate(f"{int(gendercounts[i])}", 
+                  xy=(gendercounts['Female']+gendercounts['Male']*0.5, 0.0),
+                  va = 'center', ha='center',fontsize=40, fontweight='light', fontfamily='sans',
+                  color='white')
+        ax.annotate("Male", 
+                  xy=(gendercounts['Female']+gendercounts['Male']/2, -0.25),#(my_df.iloc[:,0][i]+my_df.iloc[:,0][i], -0.25),
+                  va = 'center', ha='center',fontsize=15, fontweight='light', fontfamily='sans',
+                  color='white')
+else:
+    pass
     
-for i in range(1,2):
-    ax.annotate(f"{int(gendercounts[i])}", 
-              xy=(gendercounts['Female']+gendercounts['Male']*0.5, 0.0),
-              va = 'center', ha='center',fontsize=40, fontweight='light', fontfamily='sans',
-              color='white')
-    ax.annotate("Male", 
-              xy=(gendercounts['Female']+gendercounts['Male']/2, -0.25),#(my_df.iloc[:,0][i]+my_df.iloc[:,0][i], -0.25),
-              va = 'center', ha='center',fontsize=15, fontweight='light', fontfamily='sans',
-              color='white')
-    
-for i in range(2,3):
-    ax.annotate(f"{int(gendercounts[i])}", 
-               xy=(gendercounts['Female']+gendercounts['Male']+gendercounts['Prefer not to say']/2, 0.25),
-               va = 'center', ha='center',fontsize=40, fontweight='light', fontfamily='sans',
-               color='#1E0604')
-    ax.annotate("Prefer not to say", 
-             xy=(gendercounts['Prefer not to say']+gendercounts['Female']+gendercounts['Male']+50/2, -0.0),#(my_df.iloc[:,0][i]+my_df.iloc[:,0][i], -0.25),
-              va = 'center', ha='center',fontsize=15, fontweight='light', fontfamily='sans',
-              color='#1E0604')
-    
-for i in range(3,4):
-    ax.annotate(f"{int(gendercounts[i])}", 
-               xy=(gendercounts['Other']+gendercounts['Prefer not to say']+gendercounts['Female']+gendercounts['Male']+60/2, -0.2),
-               va = 'center', ha='center',fontsize=40, fontweight='light', fontfamily='sans',
-               color='#1E0604')
-    ax.annotate("Other", 
-               xy=(gendercounts['Other']+gendercounts['Prefer not to say']+gendercounts['Female']+gendercounts['Male']+60/2, -0.35),#(my_df.iloc[:,0][i]+my_df.iloc[:,0][i], -0.25),
-               va = 'center', ha='center',fontsize=15, fontweight='light', fontfamily='sans',
-               color='#1E0604')
+
+if filter_sex=='Prefer not to say' or filter_sex=='All':
+    for i in range(2,3):
+        ax.annotate(f"{int(gendercounts[i])}", 
+                   xy=(gendercounts['Female']+gendercounts['Male']+gendercounts['Prefer not to say']/2, 0.25),
+                   va = 'center', ha='center',fontsize=40, fontweight='light', fontfamily='sans',
+                   color='#1E0604')
+        ax.annotate("Prefer not to say", 
+                 xy=(gendercounts['Prefer not to say']+gendercounts['Female']+gendercounts['Male']+50/2, -0.0),#(my_df.iloc[:,0][i]+my_df.iloc[:,0][i], -0.25),
+                  va = 'center', ha='center',fontsize=15, fontweight='light', fontfamily='sans',
+                  color='#1E0604')
+
+else:
+    pass
+
+
+if filter_sex=='Other' or filter_sex=='All':    
+    for i in range(3,4):
+        ax.annotate(f"{int(gendercounts[i])}", 
+                   xy=(gendercounts['Other']+gendercounts['Prefer not to say']+gendercounts['Female']+gendercounts['Male']+60/2, -0.2),
+                   va = 'center', ha='center',fontsize=40, fontweight='light', fontfamily='sans',
+                   color='#1E0604')
+        ax.annotate("Other", 
+                   xy=(gendercounts['Other']+gendercounts['Prefer not to say']+gendercounts['Female']+gendercounts['Male']+60/2, -0.35),#(my_df.iloc[:,0][i]+my_df.iloc[:,0][i], -0.25),
+                   va = 'center', ha='center',fontsize=15, fontweight='light', fontfamily='sans',
+                   color='#1E0604')
+else:
+    pass
 
 #fig.text(0.125,1.25,'Gender of people with MS in the survey', fontfamily='san-serif',fontsize=30, fontweight='bold')
 #fig.text(0.125,1.1,'We have a slightly higher preponderance of females',fontfamily='san-serif',fontsize=18)  
