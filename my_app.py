@@ -616,7 +616,7 @@ with col1c:
 
     with col2c:
         st.markdown('#')
-        st.text('A STATISTICALLY REPRESENTATIVE SAMPLE OF THE AUSTRALIAN\nMS COMMUNITY WHEN COMPARED TO AMSLS, TMPGS, NZMSP')
+        #st.text('A STATISTICALLY REPRESENTATIVE SAMPLE OF THE AUSTRALIAN\nMS COMMUNITY WHEN COMPARED TO AMSLS, TMPGS, NZMSP')
         
 
         # if (df['How long ago were you diagnosed?','Response'].value_counts(sort=False).max())<=3:
