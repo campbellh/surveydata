@@ -795,7 +795,7 @@ else:
 
         plt.axvline(x = -0.5, color = 'black', linewidth = 1, alpha = 0.7)
 
-        ax.set_xticklabels([s.split('(')[0] for s in series_obj.index], fontfamily='sans', rotation=45, fontdict={'horizontalalignment':'right'});
+        ax.set_xticklabels([s.split('(')[0] for s in series_obj.sort_values(ascending=False).index], fontfamily='sans', rotation=45, fontdict={'horizontalalignment':'right'});
 
 
         st.pyplot(fig, use_container_width=True)
