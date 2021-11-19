@@ -26,7 +26,7 @@ hide_menu_style = """
 st.markdown(hide_menu_style, unsafe_allow_html=True)
 
 
-#df=pd.read_csv("https://docs.google.com/spreadsheets/d/1ejvGVkTaSyEZj3L5Uclfg8opQ93qS5XTTS__ufwlmmY/export?format=csv&gid=20053498", header=[0,1])
+
 df=pd.read_csv(st.secrets["db_name"], header=[0,1])
 #-----------------------------------------------------------------------
 
